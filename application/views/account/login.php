@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Seven Indotama</title>
+        <title>BPOM Banda Aceh</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="<?php echo base_url('assets/bootstrap/css/bootstrap.min.css') ?>" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url('assets/dist/css/AdminLTE.min.css') ?>" rel="stylesheet" type="text/css">
@@ -13,19 +13,27 @@
     <body class="login-page">
         <div class="login-box">
             <div class="login-logo">
-                <a href="#"><b>Seven</b>Indotama</a>
+                <h3>BBPOM Aceh</h3>
+                <h5>Aplikasi Pengawasan Produk (Sampling Data)</h5>
             </div>
             <div class="login-box-body">
-                <p class="login-box-msg">Sign in to start your session</p>
-
-                    <form action="<?=site_url()?>/account/index" method="POST">
+                <p class="login-box-msg">Masukan Informasi Anda.</p>
+                    <form action="<?=site_url()?>account/index" method="POST">
                       <div class="form-group has-feedback">
-                        <input type="email" name="email" class="form-control" id="InputEmail" placeholder="Email">
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                        <input type="text" name="name" class="form-control" id="InputName" placeholder="Username">
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
                       </div>
                       <div class="form-group has-feedback">
                         <input type="password" name="password" class="form-control" id="InputPassword" placeholder="Password">
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                      </div>
+
+                      <div class="form-group has-feedback">
+                        <div class="checkbox">
+                            <label>
+                            <input type="checkbox" name="remember" value="TRUE"> Remember me
+                            </label>
+                        </div>
                       </div>
 
                       <div class="row">
@@ -47,7 +55,7 @@
        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script> -->
         <script src="<?php echo base_url('assets/plugins/slimScroll/jquery.slimscroll.min.js') ?>"></script>
         <script src="<?php echo base_url('assets/dist/js/app.min.js') ?>"></script>
-
+        
         <?php if ($this->session->flashdata('gagal')) { ?>
             <script type="text/javascript">
                 $.notify({

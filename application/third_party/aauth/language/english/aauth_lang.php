@@ -19,16 +19,16 @@ $lang['aauth_email_reset_success_new_password'] = 'Your password has successfull
 /* Error Messages */
 
 // Account creation errors
-$lang['aauth_error_email_exists'] = 'Email address already exists on the system. If you forgot your password, you can click the link below.';
-$lang['aauth_error_username_exists'] = "Account already exists on the system with that username.  Please enter a different username, or if you forgot your password, please click the link below.";
-$lang['aauth_error_email_invalid'] = 'Invalid e-mail address';
-$lang['aauth_error_password_invalid'] = 'Invalid password';
-$lang['aauth_error_username_invalid'] = 'Invalid Username';
-$lang['aauth_error_username_required'] = 'Username required';
+$lang['aauth_error_email_exists'] = 'Email pengguna sudah ada, silakan anda ganti dengan email lainnya.';
+$lang['aauth_error_username_exists'] = "Username sudah ada.";
+$lang['aauth_error_email_invalid'] = 'e-mail harus diisi.';
+$lang['aauth_error_password_invalid'] = 'password harus lebih dari 5 huruf.';
+$lang['aauth_error_username_invalid'] = 'Username haru diisi.';
+$lang['aauth_error_username_required'] = 'Username tidak boleh kosong.';
 
 // Access errors
 $lang['aauth_error_no_access'] = 'Sorry, you do not have access to the resource you requested.';
-$lang['aauth_error_login_failed'] = 'E-mail Address and Password do not match.';
+$lang['aauth_error_login_failed'] = 'E-mail dan Password tidak ditemukan..';
 $lang['aauth_error_login_attempts_exceeded'] = 'You have exceeded your login attempts, your account has now been locked.';
 $lang['aauth_error_recaptcha_not_correct'] = 'Sorry, the reCAPTCHA text entered was incorrect.';
 
@@ -42,6 +42,6 @@ $lang['aauth_error_no_pm'] = 'Private Message not found';
 
 
 /* Info messages */
-$lang['aauth_info_already_member'] = 'User is already member of group';
-$lang['aauth_info_group_exists'] = 'Group name already exists';
-$lang['aauth_info_perm_exists'] = 'Permission name already exists';
+$lang['aauth_info_already_member'] = 'Pengguna sudah ada.';
+$lang['aauth_info_group_exists'] = 'Kelompok sudah ada';
+$lang['aauth_info_perm_exists'] = 'Akses sudah ada.';

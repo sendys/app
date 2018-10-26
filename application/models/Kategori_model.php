@@ -1,8 +1,7 @@
 <?php defined('BASEPATH') Or Exit('No direct script access allowed');
 
-class Barang_model extends CI_Model
-{
-	
+class Kategori_model extends CI_Model{
+
 	var $table = 'kategori';
 	var $column_order = array('kategori',null); 
 	var $column_search = array('kategori'); 
@@ -102,5 +101,5 @@ class Barang_model extends CI_Model
 		$this->db->where('id', $id);
 		$this->db->delete($this->table);
 	}
-
+	
 }

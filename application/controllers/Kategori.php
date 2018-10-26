@@ -1,9 +1,6 @@
 <?php defined('BASEPATH') OR exit('no direct script access allowed');
 
-/**
- * 
- */
-class Barang extends CI_Controller
+class Kategori extends CI_Controller
 {
 	public function __construct()
 	{
@@ -11,7 +8,7 @@ class Barang extends CI_Controller
 		$this->load->database();
 		$this->load->library(array('aauth', 'form_validation','datatables','template'));
 		$this->load->helper(array('url', 'language','form'));
-		$this->load->model('Barang_model','ibarang');
+		$this->load->model('Kategori_model','ibarang');
 
 	}
 
@@ -23,11 +20,11 @@ class Barang extends CI_Controller
 		}
 		else if (!$this->aauth->is_admin())
 		{
-			$this->template->load('layout/template','barang/index');
+			$this->template->load('layout/template','kategori/index');
 		}
 		else
 		{
-			$this->template->load('layout/template','barang/index');
+			$this->template->load('layout/template','kategori/index');
 		}
 	}
 
@@ -61,7 +58,7 @@ class Barang extends CI_Controller
 	public function ajax_edit($id)
 	{
 		$data = $this->ibarang->get_by_id($id);
-		$data->dob = ($data->dob == '0000-00-00') ? '' : $data->dob; // if 0000-00-00 set tu empty for datepicker compatibility
+		//$data->dob = ($data->dob == '0000-00-00') ? '' : $data->dob; // if 0000-00-00 set tu empty for datepicker compatibility
 		echo json_encode($data);
 	}
 
@@ -69,7 +66,7 @@ class Barang extends CI_Controller
 	{
 		$this->_validate();
 		$data = array(
-				'firstname' => $this->input->post('kategori')
+				'kategori' => $this->input->post('kategori')
 			);
 		$insert = $this->ibarang->save($data);
 		echo json_encode(array("status" => TRUE));
@@ -79,7 +76,7 @@ class Barang extends CI_Controller
 	{
 		$this->_validate();
 		$data = array(
-				'firstname' => $this->input->post('kategori'),
+				'kategori' => $this->input->post('kategori'),
 			);
 		$this->ibarang->update(array('id' => $this->input->post('id')), $data);
 		echo json_encode(array("status" => TRUE));
@@ -98,10 +95,10 @@ class Barang extends CI_Controller
 		$data['inputerror'] = array();
 		$data['status'] = TRUE;
 
-		if($this->input->post('firstName') == '')
+		if($this->input->post('kategori') == '')
 		{
 			$data['inputerror'][] = 'kategori';
-			$data['error_string'][] = 'First name is required';
+			$data['error_string'][] = 'Kategori masih kosong';
 			$data['status'] = FALSE;
 		}
 
@@ -111,6 +108,4 @@ class Barang extends CI_Controller
 			exit();
 		}
 	}
-	
-
 }

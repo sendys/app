@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Seven Indotama | Dashboard</title>
+  <title>BBPOM</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   
   <link href="<?php echo base_url('assets/bootstrap/css/bootstrap.min.css') ?>" rel="stylesheet" type="text/css">
@@ -22,9 +22,9 @@
     <!-- Logo -->
     <a href="<?=site_url('/') ?>" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>7</b></span>
+      <span class="logo-mini"><b>BPOM</b></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg">7 | Dashboard</span>
+      <span class="logo-lg">eDashboard</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -70,17 +70,18 @@
               <li class="user-header">
                 <img src="<?php echo base_url('assets/dist/img/user2-160x160.jpg') ?>" class="img-circle" alt="User Image">
                 <p>
-                <?php echo $this->session->userdata('name')?> - Web Developer
-                  <small>since Nov. 2018</small>
+                <?php echo $this->session->userdata('name')?>
                 </p>
               </li>
               <!-- Menu Footer-->
               <li class="user-footer">
-              <div class="pull-left">
-                  <a href="<?=site_url()?>/account/sign_up" class="btn btn-default btn-flat">Profile</a>
+                <div class="pull-left">
+                  <?php if ($this->aauth->is_admin()){
+                    echo '<a href="'. site_url('account/sign_up') .'" class="btn btn-default btn-flat">Pengaturan</a>';
+									}?>
                 </div>
                 <div class="pull-right">
-                  <a href="<?=site_url()?>/account/logout" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="<?=site_url()?>account/sign_out" class="btn btn-default btn-flat">Keluar</a>
                 </div>
               </li>
             </ul>
@@ -104,7 +105,7 @@
         </div>
         <div class="pull-left info">
           <p>Hello, <strong><?php echo $this->session->userdata('name')?></strong></p>
-          <?php echo "Login : " . date("d/m/Y") ;?>
+          <?php echo "" . date("d/m/Y") ;?>
         </div>
       </div>
       <!-- sidebar menu: : style can be found in sidebar.less -->
@@ -112,10 +113,7 @@
         <li class="header">MAIN NAVIGATION</li>
         <li class="active treeview">
           <a href="<?=site_url('/') ?>">
-            <i class="fa fa-dashboard"></i> <span>Index + </span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+            <i class="fa fa-home"></i> <span>Beranda</span>
           </a>
         </li>
 
@@ -127,31 +125,16 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="<?php echo site_url('auth/person') ;?>"><i class="fa fa-circle-o"></i> Data Anggota</a></li>
-            <li><a href="<?php echo site_url('barang/barang') ;?>"><i class="fa fa-circle-o"></i> Data Barang</a></li>
+            <li><a href="<?php echo site_url('kategori/index') ;?>"><i class=" fa fa-file-text"></i> Kategori</a></li>
+            <li><a href="<?php echo site_url('transaksi/index') ;?>"><i class="fa fa-list-alt"></i> Data Transaksi</a></li>
             <li><a href="<?php echo site_url('barang/index') ;?>"><i class="fa fa-circle-o"></i> Test</a></li>
           </ul>
         </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-table"></i> <span>Tables</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="pages/tables/simple.html"><i class="fa fa-circle-o"></i> Simple tables</a></li>
-            <li><a href="pages/tables/data.html"><i class="fa fa-circle-o"></i> Data tables</a></li>
-          </ul>
-        </li>
+        
         <li>
-          <a href="pages/calendar.html">
-            <i class="fa fa-calendar"></i> <span>Calendar</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-red">3</small>
-              <small class="label pull-right bg-blue">17</small>
-            </span>
-          </a>
+            <?php if ($this->aauth->is_admin()) {
+              echo '<a href="'. site_url('account/list_user') .'"><i class="fa fa-user"></i><span>Pengaturan</span></a>';
+            }?>
         </li>
       </ul>
     </section>

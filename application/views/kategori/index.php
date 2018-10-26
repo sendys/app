@@ -17,8 +17,8 @@
                 <div class="box">
                     <div class="box-header">
                     <i class="fa fa-edit"></i>
-                        <h3 class="box-title">Tabel Data Pengguna</h3>
-                        <p>&nbsp &nbsp &nbsp &nbsp &nbsp Menampilkan nama pengguna aplikasi yang telah di verifikasi.</p>
+                        <h3 class="box-title">Tabel Data Kategori</h3>
+                        <p>&nbsp &nbsp &nbsp &nbsp &nbsp Menampilkan nama kategori.</p>
                     </div>
                     <div style="padding-bottom: 10px; padding-left: 10px;"'>
                         <button class="btn btn-danger btn-sm" onclick="add_person()"><i class="fa fa-plus-square" aria-hidden="true"></i> Tambah Data</button>
@@ -81,7 +81,7 @@ $(document).ready(function() {
         "ordering" :  false,
         // Load data for the table's content from an Ajax source
         "ajax": {
-            "url": "<?php echo site_url('barang/ajax_list')?>",
+            "url": "<?php echo site_url('kategori/ajax_list')?>",
             "type": "POST"
         },
 
@@ -130,7 +130,7 @@ function edit_person(id)
 
     //Ajax Load data from ajax
     $.ajax({
-        url : "<?php echo site_url('barang/ajax_edit/')?>/" + id,
+        url : "<?php echo site_url('kategori/ajax_edit/')?>/" + id,
         type: "GET",
         dataType: "JSON",
         success: function(data)
@@ -139,7 +139,7 @@ function edit_person(id)
             $('[name="id"]').val(data.id);
             $('[name="kategori"]').val(data.kategori);
             $('#modal_form').modal('show'); // show bootstrap modal when complete loaded
-            $('.modal-title').text('Edit Pengguna'); // Set title to Bootstrap modal title
+            $('.modal-title').text('Edit Kategori'); // Set title to Bootstrap modal title
 
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -161,9 +161,9 @@ function save()
     var url;
 
     if(save_method == 'add') {
-        url = "<?php echo site_url('barang/ajax_add')?>";
+        url = "<?php echo site_url('kategori/ajax_add')?>";
     } else {
-        url = "<?php echo site_url('barang/ajax_update')?>";
+        url = "<?php echo site_url('kategori/ajax_update')?>";
     }
 
     // ajax adding data to database
@@ -217,7 +217,7 @@ function delete_person(id)
       {
         // ajax delete data to database
         $.ajax({
-            url : "<?php echo site_url('barang/ajax_delete')?>/"+id,
+            url : "<?php echo site_url('kategori/ajax_delete')?>/"+id,
             type: "POST",
             dataType: "JSON",
             success: function(data)
@@ -253,7 +253,7 @@ function delete_person(id)
                     <div class="form-body">
                         <div class="form-group">
                             <label class="control-label">Kategori</label>
-                                <input name="firstName" placeholder="First Name" class="form-control" type="text">
+                                <input name="kategori" placeholder="Kategori" class="form-control" type="text">
                                 <span class="help-block"></span>
                         </div>
                        

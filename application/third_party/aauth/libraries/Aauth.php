@@ -86,9 +86,10 @@ class Aauth {
 		$this->CI = & get_instance();
 
 		// Dependancies
-		if(CI_VERSION >= 2.2){
+		if(CI_VERSION >= 3.1){
 			$this->CI->load->library('driver');
 		}
+
 		$this->CI->load->library('session');
 		$this->CI->load->library('email');
 		$this->CI->load->database();
@@ -98,7 +99,6 @@ class Aauth {
 		$this->CI->load->helper('language');
 		//$this->CI->load->helper('recaptchalib');
 		$this->CI->lang->load('aauth');
-
 
 		// config/aauth.php
 		$this->CI->config->load('aauth');
@@ -123,19 +123,18 @@ class Aauth {
 	 * @param bool $remember
 	 * @return bool Indicates successful login.
 	 */
-	public function login($email, $pass) {
+	public function login($user, $pass, $remember = FALSE) {
 
 		// Remove cookies first
 		$cookie = array(
 			'name'	 => 'user',
 			'value'	 => '',
 			'expire' => time()-3600,
-			'path'	 => '/',
+			'path'	 => '/'
 		);
 
 		$this->CI->input->set_cookie($cookie);
 
- 
 		/*
 		*
 		* User Verification
@@ -144,20 +143,21 @@ class Aauth {
 		* It was causing issues with special characters in passwords
 		* and returning FALSE even if the password matches.
 		*/
+		/*
 		if( !valid_email($email) OR strlen($pass) < 5 OR strlen($pass) > $this->config_vars['max'] )
 		{
 			$this->error($this->CI->lang->line('aauth_error_login_failed'));
 			return FALSE;
 		}
-
+		*/
 
 		$query = null;
-		$query = $this->CI->db->where('email', $email);
+		$query = $this->CI->db->where('name', $user);
 		$query = $this->CI->db->get($this->config_vars['users']);
 		$row = $query->row();
 
 		// only email found and login attempts exceeded
-		if ($query->num_rows() > 0 && $this->config_vars['ddos_protection'] && ! $this->update_login_attempts($row->email)) {
+		if ($query->num_rows() > 0 && $this->config_vars['ddos_protection'] && ! $this->update_login_attempts($row->name)) {
 
 			$this->error($this->CI->lang->line('aauth_error_login_attempts_exceeded'));
 			return FALSE;
@@ -165,7 +165,7 @@ class Aauth {
 
 		//recaptcha login_attempts check
 		$query = null;
-		$query = $this->CI->db->where('email', $email);
+		$query = $this->CI->db->where('name', $user);
 		$query = $this->CI->db->get($this->config_vars['users']);
 		$row = $query->row();
 		if($query->num_rows() > 0 && $this->config_vars['ddos_protection'] && $this->config_vars['recaptcha_active'] && $row->login_attempts >= $this->config_vars['recaptcha_login_attempts']){
@@ -180,7 +180,7 @@ class Aauth {
 
 		// if user is not verified
 		$query = null;
-		$query = $this->CI->db->where('email', $email);
+		$query = $this->CI->db->where('name', $user);
 		$query = $this->CI->db->where('banned', 1);
 		$query = $this->CI->db->where('verification_code !=', '');
 		$query = $this->CI->db->get($this->config_vars['users']);
@@ -191,7 +191,7 @@ class Aauth {
 		}
 
 		// to find user id, create sessions and cookies
-		$query = $this->CI->db->where('email', $email);
+		$query = $this->CI->db->where('name', $user);
 		$query = $this->CI->db->get($this->config_vars['users']);
 		
 		if($query->num_rows() == 0){
@@ -202,12 +202,11 @@ class Aauth {
 		$user_id = $query->row()->id;
 		
 		$query = null;
-		$query = $this->CI->db->where('email', $email);
+		$query = $this->CI->db->where('name', $user);
 
 		// Database stores pasword hashed password
 		$query = $this->CI->db->where('pass', $this->hash_password($pass, $user_id));
 		$query = $this->CI->db->where('banned', 0);
-
 		$query = $this->CI->db->get($this->config_vars['users']);
 
 		$row = $query->row();
@@ -363,11 +362,10 @@ class Aauth {
 			'name'	 => 'user',
 			'value'	 => '',
 			'expire' => time()-3600,
-			'path'	 => '/',
+			'path'	 => '/'
 		);
 
 		$this->CI->input->set_cookie($cookie);
-
 		return $this->CI->session->sess_destroy();
 	}
 

@@ -27,33 +27,24 @@ class Account extends CI_Controller
 		
 	}
 
-	public function sign_out()
-	{
-		if(!$this->aauth->is_loggedin()){
-			redirect('welcome');
-		}
-		$this->aauth->logout();
-		redirect('welcome');
-	}
-
 	public function index()
 	{
 		if($this->aauth->is_loggedin()){
 			redirect('account/dashboard');
 		}
 		if($this->input->post()){
-			$email = $this->input->post('email');
+			$user = $this->input->post('name');
 			$password = $this->input->post('password');
 			if($this->input->post('remember') == 'TRUE'){
 				$remember = TRUE;
 			}else{
 				$remember = FALSE;
 			}
-			if($this->aauth->login($email, $password)){
+			if($this->aauth->login($user, $password, $remember)){
 				redirect('account/dashboard');
 			}else{
 				$this->session->set_flashdata('gagal',' Username atau password yang ada ketik belum benar, silakan kembali saat kemudian');
-				redirect(base_url('/'));
+				$this->load->view('account/login');
 			}
 		}else{
 			$this->load->view('account/login');
@@ -73,17 +64,38 @@ class Account extends CI_Controller
 			$name = $this->input->post('name');
 
 			if($this->aauth->create_user($email, $password, $name)){
-				$this->aauth->info('Your account has been created successfully and is ready to use. You can use the Login form.');
-				$this->template->load('layout/template','account/dashboard');
-				//redirect('account/login');
+				$this->aauth->info('Data pengguna berhasil tersimpan.');
+				redirect('account/list_user');
 			}else{
-				$this->template->load('layout/template','account/sign_up');
-				
+				redirect('account/list_user');
 			}
 		}else{
-			$this->template->load('layout/template','account/sign_up');
-			
+			$this->template->load('layout/template','account/sign_up');	
 		}
+	}
+
+	public function list_user()
+	{
+		if(!$this->aauth->is_loggedin())
+		{
+			$this->load->view('account/login');
+		}
+		else if (!$this->aauth->is_admin())
+		{
+			$this->template->load('layout/template','account/list_user');
+		}
+		else
+		{
+			$this->template->load('layout/template','account/list_user');
+		}
+	}
+
+	public function sign_out()
+	{
+		$this->data['title'] = "Logout";
+		$logout = $this->aauth->logout();
+		// redirect them to the login page
+		redirect(base_url('/'));
 	}
 
 	public function remind_password()
@@ -95,7 +107,7 @@ class Account extends CI_Controller
 			$email = $this->input->post('email');
 
 			$this->aauth->remind_password($email);
-			$this->aauth->info('The Account Verification mail will be sent to your email address.');
+			$this->aauth->info('Email pengguna sudah ada, ganti dengan yang lain.');
 
 			$this->load->view('account/remind_password');
 		}else{
@@ -158,13 +170,4 @@ class Account extends CI_Controller
 		}
 	}
 
-	public function logout()
-	{
-		$this->data['title'] = "Logout";
-
-		// log the user out
-		$logout = $this->aauth->logout();
-		$this->aauth->logout();
-		redirect(base_url('/'));
-	}
 }

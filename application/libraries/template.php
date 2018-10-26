@@ -1,7 +1,7 @@
 <?php 
 defined('BASEPATH') or exit('no direct script access not allowed');
 
-class template 
+class Template 
 {
 	
 	var $layout = array();
