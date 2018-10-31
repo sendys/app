@@ -57,183 +57,182 @@
 <script src="<?php echo base_url('assets/plugins/datepicker/bootstrap-datepicker.js') ?>"></script>
 
 <script type="text/javascript">
-var save_method; //for save method string
-var table;
+    var save_method; //for save method string
+    var table;
 
-$(document).ready(function() {
-
-    //datatables
-    table = $('#table').DataTable({
-        "loadingRecords": "Loading...", 
-        "processing": true, 
-        "serverSide": true,
-        "language": {
-            "lengthMenu": "Display _MENU_",
-            "zeroRecords": "Nothing found - sorry",
-            "info": "Showing page _PAGE_ of _PAGES_",
-            "infoEmpty": "No records available",
-            "infoFiltered": "(filtered from _MAX_ total records)"
+    $(document).ready(function() {
+        //datatables
+        table = $('#table').DataTable({
+            "loadingRecords": "Loading...", 
+            "processing": true, 
+            "serverSide": true,
+            "language": {
+                "lengthMenu": "Display _MENU_",
+                "zeroRecords": "Nothing found - sorry",
+                "info": "Showing page _PAGE_ of _PAGES_",
+                "infoEmpty": "No records available",
+                "infoFiltered": "(filtered from _MAX_ total records)"
+                },
+            "pagingType": "full_numbers",
+            "aLengthMenu": [[10,15,25, 75, -1], [10,15,30,50,75,100]], 
+            "order": [],
+            "iDisplayLength": 15,
+            "ordering" :  false,
+            // Load data for the table's content from an Ajax source
+            "ajax": {
+                "url": "<?php echo site_url('barang/ajax_list')?>",
+                "type": "POST"
             },
-        "pagingType": "full_numbers",
-        "aLengthMenu": [[10,15,25, 75, -1], [10,15,30,50,75,100]], 
-        "order": [],
-        "iDisplayLength": 15,
-        "ordering" :  false,
-        // Load data for the table's content from an Ajax source
-        "ajax": {
-            "url": "<?php echo site_url('barang/ajax_list')?>",
-            "type": "POST"
-        },
 
-        //Set column definition initialisation properties.
-        "columnDefs": [
-        { 
-            "targets": [ -1 ], //last column
-            "orderable": false, //set not orderable
-        },
-        ],
+            //Set column definition initialisation properties.
+            "columnDefs": [
+            { 
+                "targets": [ -1 ], //last column
+                "orderable": false, //set not orderable
+            },
+            ],
+
+        });
+
+        //set input/textarea/select event when change value, remove class error and remove text help block 
+        $("input").change(function(){
+            $(this).parent().parent().removeClass('has-error');
+            $(this).next().empty();
+        });
+        $("textarea").change(function(){
+            $(this).parent().parent().removeClass('has-error');
+            $(this).next().empty();
+        });
+        $("select").change(function(){
+            $(this).parent().parent().removeClass('has-error');
+            $(this).next().empty();
+        });
 
     });
 
-    //set input/textarea/select event when change value, remove class error and remove text help block 
-    $("input").change(function(){
-        $(this).parent().parent().removeClass('has-error');
-        $(this).next().empty();
-    });
-    $("textarea").change(function(){
-        $(this).parent().parent().removeClass('has-error');
-        $(this).next().empty();
-    });
-    $("select").change(function(){
-        $(this).parent().parent().removeClass('has-error');
-        $(this).next().empty();
-    });
-
-});
-
-function add_person()
-{
-    save_method = 'add';
-    $('#form')[0].reset(); // reset form on modals
-    $('.form-group').removeClass('has-error'); // clear error class
-    $('.help-block').empty(); // clear error string
-    $('#modal_form').modal({backdrop: "static"}); // show bootstrap modal
-    $('.modal-title').text('Pengguna Baru'); // Set Title to Bootstrap modal title
-}
-
-function edit_person(id)
-{
-    save_method = 'update';
-    $('#form')[0].reset(); // reset form on modals
-    $('.form-group').removeClass('has-error'); // clear error class
-    $('.help-block').empty(); // clear error string
-
-    //Ajax Load data from ajax
-    $.ajax({
-        url : "<?php echo site_url('barang/ajax_edit/')?>/" + id,
-        type: "GET",
-        dataType: "JSON",
-        success: function(data)
-        {
-
-            $('[name="id"]').val(data.id);
-            $('[name="kategori"]').val(data.kategori);
-            $('#modal_form').modal('show'); // show bootstrap modal when complete loaded
-            $('.modal-title').text('Edit Pengguna'); // Set title to Bootstrap modal title
-
-        },
-        error: function (jqXHR, textStatus, errorThrown)
-        {
-            alert('Error get data from ajax');
-        }
-    });
-}
-
-function reload_table()
-{
-    table.ajax.reload(null,false); //reload datatable ajax 
-}
-
-function save()
-{
-    $('#btnSave').text('saving...'); //change button text
-    $('#btnSave').attr('disabled',true); //set button disable 
-    var url;
-
-    if(save_method == 'add') {
-        url = "<?php echo site_url('barang/ajax_add')?>";
-    } else {
-        url = "<?php echo site_url('barang/ajax_update')?>";
+    function add_person()
+    {
+        save_method = 'add';
+        $('#form')[0].reset(); // reset form on modals
+        $('.form-group').removeClass('has-error'); // clear error class
+        $('.help-block').empty(); // clear error string
+        $('#modal_form').modal({backdrop: "static"}); // show bootstrap modal
+        $('.modal-title').text('Pengguna Baru'); // Set Title to Bootstrap modal title
     }
 
-    // ajax adding data to database
-    $.ajax({
-        url : url,
-        type: "POST",
-        data: $('#form').serialize(),
-        dataType: "JSON",
-        success: function(data)
-        {
+    function edit_person(id)
+    {
+        save_method = 'update';
+        $('#form')[0].reset(); // reset form on modals
+        $('.form-group').removeClass('has-error'); // clear error class
+        $('.help-block').empty(); // clear error string
 
-            if(data.status) //if success close modal and reload ajax table
-            {
-                $('#modal_form').modal('hide');
-                reload_table();
-            }
-            else
-            {
-                for (var i = 0; i < data.inputerror.length; i++) 
-                {
-                    $('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error'); //select parent twice to select div form-group class and add has-error class
-                    $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]); //select span help-block class set text error string
-                }
-            }
-            $('#btnSave').text('save'); //change button text
-            $('#btnSave').attr('disabled',false); //set button enable 
-
-
-        },
-        error: function (jqXHR, textStatus, errorThrown)
-        {
-            alert('Error adding / update data');
-            $('#btnSave').text('save'); //change button text
-            $('#btnSave').attr('disabled',false); //set button enable 
-
-        }
-    });
-}
-
-function delete_person(id)
-{
-    swal({
-      title: "Yakin Hapus Data?",
-      text: "Data akan dihapus secara permanen!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    })
-    .then((willDelete) => {
-      if (willDelete) 
-      {
-        // ajax delete data to database
+        //Ajax Load data from ajax
         $.ajax({
-            url : "<?php echo site_url('barang/ajax_delete')?>/"+id,
-            type: "POST",
+            url : "<?php echo site_url('barang/ajax_edit/')?>/" + id,
+            type: "GET",
             dataType: "JSON",
             success: function(data)
             {
-                //if success reload ajax table
-                $('#modal_form').modal('hide');
-                reload_table();
+
+                $('[name="id"]').val(data.id);
+                $('[name="kategori"]').val(data.kategori);
+                $('#modal_form').modal('show'); // show bootstrap modal when complete loaded
+                $('.modal-title').text('Edit Pengguna'); // Set title to Bootstrap modal title
+
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
-                alert('Error deleting data');
+                alert('Error get data from ajax');
             }
         });
-        swal("Data berhasil terhapus.", {icon: "success",});
-      } 
-    });
+    }
+
+    function reload_table()
+    {
+        table.ajax.reload(null,false); //reload datatable ajax 
+    }
+
+    function save()
+    {
+        $('#btnSave').text('saving...'); //change button text
+        $('#btnSave').attr('disabled',true); //set button disable 
+        var url;
+
+        if(save_method == 'add') {
+            url = "<?php echo site_url('barang/ajax_add')?>";
+        } else {
+            url = "<?php echo site_url('barang/ajax_update')?>";
+        }
+
+        // ajax adding data to database
+        $.ajax({
+            url : url,
+            type: "POST",
+            data: $('#form').serialize(),
+            dataType: "JSON",
+            success: function(data)
+            {
+
+                if(data.status) //if success close modal and reload ajax table
+                {
+                    $('#modal_form').modal('hide');
+                    reload_table();
+                }
+                else
+                {
+                    for (var i = 0; i < data.inputerror.length; i++) 
+                    {
+                        $('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error'); //select parent twice to select div form-group class and add has-error class
+                        $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]); //select span help-block class set text error string
+                    }
+                }
+                $('#btnSave').text('save'); //change button text
+                $('#btnSave').attr('disabled',false); //set button enable 
+
+
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Error adding / update data');
+                $('#btnSave').text('save'); //change button text
+                $('#btnSave').attr('disabled',false); //set button enable 
+
+            }
+        });
+    }
+
+    function delete_person(id)
+    {
+        swal({
+        title: "Yakin Hapus Data?",
+        text: "Data akan dihapus secara permanen!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+        })
+        .then((willDelete) => {
+        if (willDelete) 
+        {
+            // ajax delete data to database
+            $.ajax({
+                url : "<?php echo site_url('barang/ajax_delete')?>/"+id,
+                type: "POST",
+                dataType: "JSON",
+                success: function(data)
+                {
+                    //if success reload ajax table
+                    $('#modal_form').modal('hide');
+                    reload_table();
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Error deleting data');
+                }
+            });
+            swal("Data berhasil terhapus.", {icon: "success",});
+        } 
+        });
 }
 
 </script>

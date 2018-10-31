@@ -75,14 +75,14 @@ class mGrup extends CI_Model{
 		$this->db->from($this->table);
 		return $this->db->count_all_results();
 	}
-
+/* 
 	public function get_by_id($id)
 	{
 		$this->db->from($this->table);
 		$this->db->where('id',$id);
 		$query = $this->db->get();
 		return $query->row();
-	}
+	} */
 	
 
     //fungsi simpan
@@ -125,7 +125,7 @@ class mGrup extends CI_Model{
 
 		if($this->form_validation->run()){
 			$id	= $this->input->post('id');
-			$data['kategori']	=$this->input->post('kategori')
+			$data['kategori']	=$this->input->post('kategori');
 			$update_id =$this->db->update('kategori', $data,array('id'=>$id));
 			if ($update_id){
                 $json = array(
