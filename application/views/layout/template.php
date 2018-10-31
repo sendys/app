@@ -13,6 +13,7 @@
   <link href="<?php echo base_url('assets/dist/css/AdminLTE.min.css') ?>" rel="stylesheet" type="text/css">
   <link href="<?php echo base_url('assets/dist/css/skins/_all-skins.min.css') ?>" rel="stylesheet" type="text/css">
   <link href="<?php echo base_url('assets/plugins/datepicker/datepicker3.css') ?>" rel="stylesheet" type="text/css">
+  <link href="<?php echo base_url('assets/plugins/select2/select2.min.css') ?>" rel="stylesheet" type="text/css">
  
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -126,8 +127,8 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="<?php echo site_url('kategori/index') ;?>"><i class=" fa fa-file-text"></i> Kategori</a></li>
-            <li><a href="<?php echo site_url('transaksi/index') ;?>"><i class="fa fa-list-alt"></i> Data Transaksi</a></li>
-            <li><a href="<?php echo site_url('barang/index') ;?>"><i class="fa fa-circle-o"></i> Test</a></li>
+            <li><a href="<?php echo site_url('transaksi/index') ;?>"><i class="fa fa-list-alt"></i> Data Sampling</a></li>
+            <li><a href="<?php echo site_url('grup/index') ;?>"><i class="fa fa-circle-o"></i> Grup</a></li>
           </ul>
         </li>
         
@@ -157,11 +158,17 @@
 <!-- ./wrapper -->
 
   <!-- jQuery 2.2.3 -->
+  
   <script src="<?php echo base_url('assets/plugins/slimScroll/jquery.slimscroll.min.js') ?>"></script>
   <script src="<?php echo base_url('assets/plugins/fastclick/fastclick.js') ?>"></script>
+  <script src="<?php echo base_url('assets/plugins/select2/select2.full.min.js') ?>"></script>
   <script src="<?php echo base_url('assets/dist/js/app.min.js') ?>"></script>
   <script src="<?php echo base_url('assets/dist/js/pages/dashboard.js') ?>"></script>
   <script src="<?php echo base_url('assets/dist/js/demo.js') ?>"></script>
   <script src="<?php echo base_url('assets/plugins/chartjs/Chart.min.js') ?>"></script>
+  <script>
+    //Initialize Select2 Elements
+    $(".select2").select2();
+  </script>
 </body>
 </html>
